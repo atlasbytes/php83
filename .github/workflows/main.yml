@@ -14,15 +14,25 @@ concurrency:
 
 jobs:
   build:
-    uses: ./.github/workflows/build.yml
     strategy:
       matrix:
         arch: ['linux/amd64', 'linux/arm64']
-        os: ['ubuntu-22.04']
-    with:
-      runner-os: ${{ matrix.os }}
-      arch: ${{ matrix.arch }}
-      cache-key: ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-${{ github.sha }}
-      cache-restore-keys: |
-        ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
-        ${{ matrix.os }}-buildx-${{ matrix.arch }}-
+        include:
+          - file: 'fpm/Dockerfile'
+            image-name-suffix: ''
+          - file: 'apache/Dockerfile'
+            image-name-suffix: '/apache'
+    name: Build image
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: ./.github/actions/build-images
+        with:
+          arch: ${{ matrix.arch }}
+          cache-key: ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-${{ github.sha }}
+          cache-restore-keys: |
+            ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
+            ${{ matrix.os }}-buildx-${{ matrix.arch }}-
+          file: ${{ matrix.file }}
+          image-name-suffix: ${{ matrix.image-name-suffix }}
