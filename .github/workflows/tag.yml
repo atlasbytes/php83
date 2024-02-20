@@ -18,9 +18,9 @@ jobs:
       matrix:
         arch: ['linux/amd64', 'linux/arm64']
         include:
-          - file: 'fpm/Dockerfile'
+          - dockerfile: 'fpm/Dockerfile'
             image-name-suffix: ''
-          - file: 'apache/Dockerfile'
+          - dockerfile: 'apache/Dockerfile'
             image-name-suffix: '/apache'
     name: Build image
     runs-on: ubuntu-22.04
@@ -35,6 +35,6 @@ jobs:
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-main-
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-
-          file: ${{ matrix.file }}
+          dockerfile: ${{ matrix.dockerfile }}
           image-name-suffix: ${{ matrix.image-name-suffix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}

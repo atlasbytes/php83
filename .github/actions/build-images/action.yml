@@ -13,7 +13,7 @@ inputs:
     description: 'Cache restore keys list'
     type: string
     required: true
-  file:
+  dockerfile:
     description: 'Dockerfile path'
     type: string
     required: true
@@ -34,7 +34,7 @@ runs:
     - name: Lint Dockerfile
       uses: hadolint/hadolint-action@v3.1.0
       with:
-        dockerfile: ${{ inputs.file }}
+        dockerfile: ${{ inputs.dockerfile }}
     - name: Cache Docker layers
       uses: actions/cache@v4
       with:
@@ -109,6 +109,7 @@ runs:
       with:
         push: ${{ !(env.ACT || github.actor == 'dependabot[bot]') }}
         context: .
+        file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.arch }}
         target: runtime
         tags: ${{ steps.meta_runtime.outputs.tags }}
@@ -120,6 +121,7 @@ runs:
       with:
         push: ${{ !(env.ACT || github.actor == 'dependabot[bot]') }}
         context: .
+        file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.arch }}
         target: builder
         tags: ${{ steps.meta_builder.outputs.tags }}
@@ -131,6 +133,7 @@ runs:
       with:
         push: ${{ !(env.ACT || github.actor == 'dependabot[bot]') }}
         context: .
+        file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.arch }}
         target: builder_nodejs
         tags: ${{ steps.meta_builder_nodejs.outputs.tags }}
@@ -142,6 +145,7 @@ runs:
       with:
         push: ${{ !(env.ACT || github.actor == 'dependabot[bot]') }}
         context: .
+        file: ${{ inputs.dockerfile }}
         platforms: ${{ inputs.arch }}
         target: vscode
         tags: ${{ steps.meta_vscode.outputs.tags }}

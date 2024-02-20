@@ -34,6 +34,6 @@ jobs:
           cache-restore-keys: |
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-
-          file: ${{ matrix.file }}
+          dockerfile: ${{ matrix.file }}
           image-name-suffix: ${{ matrix.image-name-suffix }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
