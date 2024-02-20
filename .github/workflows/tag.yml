@@ -37,3 +37,4 @@ jobs:
             ${{ matrix.os }}-buildx-${{ matrix.arch }}-
           file: ${{ matrix.file }}
           image-name-suffix: ${{ matrix.image-name-suffix }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
