@@ -13,41 +13,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-fpm:
+  build:
+    uses: Ilyes512/github-actions/.github/workflows/build-php.yml@0.2.0
     strategy:
       matrix:
-        arch: ['linux/amd64', 'linux/arm64']
-    name: Build FPM images
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: ./.github/actions/build-images
-        with:
-          arch: ${{ matrix.arch }}
-          cache-key: ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-${{ github.sha }}
-          cache-restore-keys: |
-            ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
-            ${{ matrix.os }}-buildx-${{ matrix.arch }}-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: 'fpm/Dockerfile'
+        platform:
+          - linux/amd64
+          - linux/arm64
+        docker:
+          - dockerfile: fpm/Dockerfile
+            image-name: ghcr.io/${{ github.repository }}
+            key: fpm
+          - dockerfile: apache/Dockerfile
+            image-name: ghcr.io/${{ github.repository }}/apache
+            key: apache
+    with:
+      runner-os: ubuntu-22.04
+      platform: ${{ matrix.platform }}
+      image-name: ${{ matrix.docker.image-name }}
+      dockerfile: ${{ matrix.docker.dockerfile }}
+      cache-key: ${{ matrix.os }}-buildx-${{ matrix.platform }}-${{ matrix.docker.key }}-${{ github.ref_name }}-${{ github.sha }}
+      cache-restore-keys: |
+        ${{ matrix.os }}-buildx-${{ matrix.platform }}-${{ matrix.docker.key }}-${{ github.ref_name }}-
+        ${{ matrix.os }}-buildx-${{ matrix.platform }}-${{ matrix.docker.key }}
 
-  build-apache:
+  merge:
+    uses: Ilyes512/github-actions/.github/workflows/merge-php.yml@0.2.0
+    needs: build
     strategy:
       matrix:
-        arch: ['linux/amd64', 'linux/arm64']
-    name: Build Apache images
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - uses: ./.github/actions/build-images
-        with:
-          arch: ${{ matrix.arch }}
-          cache-key: ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-${{ github.sha }}
-          cache-restore-keys: |
-            ${{ matrix.os }}-buildx-${{ matrix.arch }}-${{ github.ref_name }}-
-            ${{ matrix.os }}-buildx-${{ matrix.arch }}-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: 'apache/Dockerfile'
-          image-name-suffix: '/apache'
+        image-name:
+          - ghcr.io/${{ github.repository }}
+          - ghcr.io/${{ github.repository }}/apache
+    with:
+      runner-os: ubuntu-22.04
+      image-name: ${{ matrix.image-name }}
