@@ -4,16 +4,19 @@
 version: 2
 updates:
   - package-ecosystem: docker
-    directory: "/"
+    directory: "fpm"
     schedule:
       interval: "daily"
     ignore:
       - dependency-name: '*'
         update-types: ["version-update:semver-major", "version-update:semver-minor"]
-    groups:
-      docker-updates:
-        patterns:
-          - "*"
+  - package-ecosystem: docker
+    directory: "apache"
+    schedule:
+      interval: "daily"
+    ignore:
+      - dependency-name: '*'
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
