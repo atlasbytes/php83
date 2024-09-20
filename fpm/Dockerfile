@@ -6,7 +6,7 @@ ARG UNIQUE_ID_FOR_CACHEFROM=runtime
 # Latest version of event-extension: https://pecl.php.net/package/event
 ARG PHP_EVENT_VERSION=3.1.4
 # Latest version of igbinary-extension: https://pecl.php.net/package/igbinary
-ARG PHP_IGBINARY_VERSION=3.2.15
+ARG PHP_IGBINARY_VERSION=3.2.16
 # Latest version of redis-extension: https://pecl.php.net/package/redis
 ARG PHP_REDIS_VERSION=6.0.2
 # Latest version of amqp-extension: https://pecl.php.net/package/amqp
