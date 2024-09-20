@@ -12,8 +12,8 @@ ARG PHP_REDIS_VERSION=6.0.2
 # Latest version of amqp-extension: https://pecl.php.net/package/amqp
 ARG PHP_AMQP_VERSION=2.1.2
 
-ENV SMTPHOST mail
-ENV SMTPEHLO localhost
+ENV SMTPHOST=mail
+ENV SMTPEHLO=localhost
 
 WORKDIR /var/www
 
