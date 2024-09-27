@@ -41,11 +41,6 @@ tasks:
           TARGET: builder_nodejs
           DOCKER_IMAGE_NAME: '{{.DOCKER_IMAGE_NAME}}'
           DOCKER_FILE_PATH: '{{.DOCKER_FILE_PATH}}'
-      - task: build:target
-        vars:
-          TARGET: vscode
-          DOCKER_IMAGE_NAME: '{{.DOCKER_IMAGE_NAME}}'
-          DOCKER_FILE_PATH: '{{.DOCKER_FILE_PATH}}'
 
   build:apache:
     desc: Build all PHP Docker image targets of the Apache variant
@@ -69,11 +64,6 @@ tasks:
           TARGET: builder_nodejs
           DOCKER_IMAGE_NAME: '{{.DOCKER_IMAGE_NAME}}'
           DOCKER_FILE_PATH: '{{.DOCKER_FILE_PATH}}'
-      - task: build:target
-        vars:
-          TARGET: vscode
-          DOCKER_IMAGE_NAME: '{{.DOCKER_IMAGE_NAME}}'
-          DOCKER_FILE_PATH: '{{.DOCKER_FILE_PATH}}'
 
   build:target:
     preconditions:
@@ -81,8 +71,7 @@ tasks:
           test '{{.TARGET}}' = 'runtime'
           -o '{{.TARGET}}' = 'builder'
           -o '{{.TARGET}}' = 'builder_nodejs'
-          -o '{{.TARGET}}' = 'vscode'
-        msg: TARGET needs to contain the Docker TARGET [runtime, builder, builder_nodejs, vscode]
+        msg: TARGET needs to contain the Docker TARGET [runtime, builder, builder_nodejs]
     vars:
       VERSION: '{{.VERSION | default "latest"}}'
     cmds:
