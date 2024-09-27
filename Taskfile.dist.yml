@@ -1,12 +1,15 @@
 version: "3"
 
-silent: true
-
 vars:
   DOCKER_REPO: ghcr.io
   DOCKER_OWNER: ilyes512
   # Latatest version of Hadolint: https://hub.docker.com/r/hadolint/hadolint/tags or https://github.com/hadolint/hadolint/releases
   HADOLINT_TAG_VERSION: v2.12.0
+
+# env:
+#   BUILDKIT_PROGRESS: plain
+
+# silent: true
 
 tasks:
 
@@ -88,6 +91,8 @@ tasks:
         --tag {{.DOCKER_REPO}}/{{.DOCKER_OWNER}}/{{.DOCKER_IMAGE_NAME}}:{{.TARGET}}-{{.VERSION}}
         --file {{.DOCKER_FILE_PATH}}
         .
+    requires:
+      vars: [DOCKER_IMAGE_NAME, TARGET, DOCKER_FILE_PATH]
 
   lint:fpm:
     desc: Apply a Dockerfile linter (https://github.com/hadolint/hadolint)
@@ -102,8 +107,6 @@ tasks:
         vars: { DOCKERFILE_PATH: apache/Dockerfile }
 
   lint:
-    vars:
-      DOCKERFILE_PATH: '{{.DOCKERFILE_PATH}}'
     cmds:
       - docker run
         --interactive
@@ -113,6 +116,8 @@ tasks:
         hadolint
         -
         < {{.DOCKERFILE_PATH}}
+    requires:
+      vars: [DOCKERFILE_PATH]
 
   shell:fpm:
     desc: Interactive shell

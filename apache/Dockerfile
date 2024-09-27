@@ -1,5 +1,5 @@
 # Latest version of PHP base image: https://hub.docker.com/_/php?tab=tags
-FROM php:8.3.12-apache-bullseye AS runtime
+FROM php:8.3.12-apache-bookworm AS runtime
 
 ARG UNIQUE_ID_FOR_CACHEFROM=runtime
 
@@ -24,10 +24,10 @@ RUN apt-get update \
         curl \
         msmtp-mta \
         # Dependency of the PHP intl-extension
-        libicu67 \
+        libicu72 \
         # Dependency of the PHP gd-extension
         libpng16-16 \
-        libwebp6 \
+        libwebp7 \
         libjpeg62-turbo \
         libfreetype6 \
         # Dependency of PHP zip-extension
@@ -204,7 +204,7 @@ RUN apt-get update \
         openssh-client \
         sudo \
         # VSCode Live Share Extension dependencies
-        libicu67 \
+        libicu72 \
         libkrb5-3 \
         zlib1g \
         gnome-keyring \
