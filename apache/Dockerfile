@@ -194,23 +194,3 @@ RUN apt-get update \
     && apt-get clean --assume-yes \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
-
-FROM builder_nodejs AS vscode
-
-ARG UNIQUE_ID_FOR_CACHEFROM=vscode
-
-RUN apt-get update \
-    && apt-get install --assume-yes --no-install-recommends \
-        openssh-client \
-        sudo \
-        # VSCode Live Share Extension dependencies
-        libicu72 \
-        libkrb5-3 \
-        zlib1g \
-        gnome-keyring \
-        libsecret-1-0 \
-        desktop-file-utils \
-        x11-utils \
-    && apt-get autoremove --assume-yes \
-    && apt-get clean --assume-yes \
-    && rm -rf /var/lib/apt/lists/*
