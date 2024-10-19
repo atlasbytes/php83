@@ -30,7 +30,7 @@ jobs:
             image-name: ghcr.io/${{ github.repository }}/apache
             key: apache
     with:
-      runs-on: ubuntu-22.04
+      runs-on: blacksmith-2vcpu-ubuntu-2204
       platform: ${{ matrix.platform }}
       image-name: ${{ matrix.docker.image-name }}
       dockerfile: ${{ matrix.docker.dockerfile }}
@@ -49,5 +49,5 @@ jobs:
           - ghcr.io/${{ github.repository }}
           - ghcr.io/${{ github.repository }}/apache
     with:
-      runs-on: ubuntu-22.04
+      runs-on: blacksmith-2vcpu-ubuntu-2204
       image-name: ${{ matrix.image-name }}
